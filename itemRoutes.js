@@ -15,7 +15,7 @@ router.get("/", function (req, res) {
 
 router.post("/", function (req, res) {
 
-  if(!(req.body.name) || !(req.body.price)){
+  if (!(req.body.name) || !(req.body.price)) {
     throw new BadRequestError("Invalid JSON sent.");
   }
 
