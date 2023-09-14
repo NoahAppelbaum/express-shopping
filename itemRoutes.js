@@ -1,18 +1,23 @@
+"use strict";
+
 const express = require("express");
-const { items } = require("./fakeDb");
+const { items, ITEM_MODEL } = require("./fakeDb");
 const router = new express.Router();
 
 const { NotFoundError, BadRequestError } = require("./expressError");
 
-const ITEM_MODEL = { name: 'example', price: 'example' };
 
-
+/** GET /items: respond with JSON list of items */
 router.get("/", function (req, res) {
   return res.json({ items });
 });
 
 
 router.post("/", function (req, res) {
+
+  if(!(req.body.name) || !(req.body.price)){
+    throw new BadRequestError("Invalid JSON sent.");
+  }
 
   for (const key in req.body) {
     if (!(key in ITEM_MODEL)) {
@@ -28,9 +33,8 @@ router.post("/", function (req, res) {
   return res.status(201).json({ added: newItem });
 });
 
-
+/** GET /items/:name: responds with JSON for particular item*/
 router.get("/:name", function (req, res) {
-  if (!req.params.name) throw new BadRequestError();
 
   const item = items.find(item => item.name === req.params.name);
 
@@ -40,6 +44,7 @@ router.get("/:name", function (req, res) {
 });
 
 
+/** PATCH /items/:name: updates keys passed in request for specified item */
 router.patch("/:name", function (req, res) {
   for (const key in req.body) {
     if (!(key in ITEM_MODEL)) {
@@ -62,8 +67,8 @@ router.patch("/:name", function (req, res) {
 });
 
 
+/** DELETE /items/:name: deletes item from the fakeDB */
 router.delete("/:name", function (req, res) {
-  if (!req.params.name) throw new BadRequestError();
 
   const itemIndex = items.findIndex(item => item.name === req.params.name);
 
