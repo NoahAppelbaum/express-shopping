@@ -3,7 +3,7 @@
 const express = require("express");
 const app = express();
 
-const { NotFoundError, BadRequestError } = require("./expressError");
+const { NotFoundError } = require("./expressError");
 
 const itemRoutes = require("./itemRoutes");
 

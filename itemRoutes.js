@@ -24,10 +24,8 @@ router.post("/", function (req, res) {
       throw new BadRequestError("Invalid JSON sent.");
     }
   }
-
+  //FIXME: better to extract name and price out rather than just req.body
   const newItem = req.body;
-
-
 
   items.push(newItem);
   return res.status(201).json({ added: newItem });
